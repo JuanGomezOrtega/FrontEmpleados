@@ -10,6 +10,8 @@ import { NgForm } from '@angular/forms';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+  public imagenFinal: String = "";
+  public archivos: any = [];
   public employees: Employee[] =[];
   public editEmployee: Employee;
   public deleteEmployee: Employee;
@@ -37,12 +39,20 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.getEmployees();
   }
+  capturarFile(event:any){
+    const archivoCapturado = event.target.files[0];
+    this.base64(archivoCapturado).then((image: any) => this.imagenFinal=image);
+    
+    this.archivos.push(archivoCapturado);
+
+    //console.log(archivoCapturado);
+  }
 
   public getEmployees(): void {
     this.employeeService.getEmployees().subscribe(
       (response: Employee[]) => {
         this.employees = response;
-        console.log(this.employees);
+        //console.log(this.employees);
       },
       (error: HttpErrorResponse) => {
         alert(error.message);
@@ -52,6 +62,10 @@ export class AppComponent implements OnInit {
 
   public onAddEmloyee(addForm: NgForm): void {
     document.getElementById('add-employee-form')?.click();
+    this.editEmployee = addForm.value;
+    console.log(this.imagenFinal);
+    this.editEmployee.image=this.imagenFinal;
+    console.log(this.editEmployee)
     this.employeeService.addEmployee(addForm.value).subscribe(
       (response: Employee) => {
         console.log(response);
@@ -132,6 +146,23 @@ export class AppComponent implements OnInit {
 
   }
 
+  
 
-
+  base64(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            const image = reader.result?.toString();
+            if (image) {
+                resolve(image);
+            } else {
+                reject(new Error('No se pudo convertir el archivo a base64'));
+            }
+        };
+        reader.onerror = error => {
+            reject(error);
+        };
+    });
+}
 }
