@@ -6,5 +6,4 @@ export interface Employee {
     phone: string;
     image: string;
     employeeCode: string;
-    ghugh
   }
