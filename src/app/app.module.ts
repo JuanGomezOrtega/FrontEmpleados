@@ -6,14 +6,28 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { EmployeeService } from './employee.service';
+import { AdministradorComponent } from './administrador/administrador.component';
+import { NavComponent } from './nav/nav.component';
+import { TabMenuModule } from 'primeng/tabmenu';
+import { ButtonModule } from 'primeng/button';
+import { EmpleadosComponent } from './empleados/empleados.component';
+import { TableModule } from 'primeng/table';
+import { AgregarEmpleadoComponent } from './Funcionalidades/agregar-empleado/agregar-empleado.component';
+
+
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AdministradorComponent,
+    NavComponent,
+    EmpleadosComponent,
+    AgregarEmpleadoComponent,
+
   ],
   imports: [
     BrowserModule,
-    HttpClientModule, FormsModule
+    HttpClientModule, FormsModule, AppRoutingModule, TabMenuModule, ButtonModule, TableModule
   ],
   providers: [EmployeeService],
   bootstrap: [AppComponent]
