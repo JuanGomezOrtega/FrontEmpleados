@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
+
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -13,6 +14,8 @@ import { ButtonModule } from 'primeng/button';
 import { EmpleadosComponent } from './empleados/empleados.component';
 import { TableModule } from 'primeng/table';
 import { AgregarEmpleadoComponent } from './Funcionalidades/agregar-empleado/agregar-empleado.component';
+import { UpdateComponent } from './Funcionalidades/update/update.component';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 
 
@@ -23,10 +26,11 @@ import { AgregarEmpleadoComponent } from './Funcionalidades/agregar-empleado/agr
     NavComponent,
     EmpleadosComponent,
     AgregarEmpleadoComponent,
+    UpdateComponent,
 
   ],
   imports: [
-    BrowserModule,
+    BrowserModule, KeyFilterModule,
     HttpClientModule, FormsModule, AppRoutingModule, TabMenuModule, ButtonModule, TableModule
   ],
   providers: [EmployeeService],

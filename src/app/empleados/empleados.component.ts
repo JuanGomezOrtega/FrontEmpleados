@@ -81,6 +81,7 @@ export class EmpleadosComponent implements OnInit {
         addForm.reset();
       }
     );
+    window.location.reload();
   }
 
   public onUpdateEmloyee(employee: Employee): void {

@@ -25,6 +25,14 @@ export class AdministradorComponent implements OnInit{
   employees: Employee[] =[];
   empleadoComponente: EmpleadosComponent = new EmpleadosComponent(this.employeeService);
   selectedEmployee!: Employee[];
+  deleteEmployees: number[] = [];
+  fila: any[] = [];
+  mostrarFiltro: boolean = false;
+  valorId!: number;
+  valorName!: string;
+  valorPhone!: string;
+  valorEmail!: string;
+  valorJob!: string;
 
   constructor(private employeeService: EmployeeService) {}
 
@@ -53,8 +61,8 @@ export class AdministradorComponent implements OnInit{
       import('jspdf').then((jsPDF) => {
           import('jspdf-autotable').then((x) => {
               const doc = new jsPDF.default('p', 'px', 'a4');
-              (doc as any).autoTable(this.exportColumns, this.employees);
-              doc.save('products.pdf');
+              (doc as any).autoTable(this.exportColumns, this.empleadoComponente.employees);
+              doc.save('employees.pdf');
           });
       });
   }
@@ -77,9 +85,55 @@ export class AdministradorComponent implements OnInit{
       FileSaver.saveAs(data, fileName + '_export_' + new Date().getTime() + EXCEL_EXTENSION);
   }
 
-disparador(){
-    this.empleadoComponente.onOpenModal('add');
+disparador(s: string){
+    this.empleadoComponente.onOpenModal(s);
+}
+disparadorDelete(id: number[]){
+    console.log(this.deleteEmployees)
+    id.forEach(element => {
+        this.empleadoComponente.onDeleteEmloyee(element);
+        console.log(element)
+    });
+    
+}
+seleccionFila(rowData: any) {
+    console.log(rowData);
+    if(this.deleteEmployees.indexOf(rowData) === -1){
+        this.deleteEmployees.push(rowData.id);
+        this.empleadoComponente.editEmployee = rowData;
+        console.log(this.deleteEmployees);
+    }
+}
+
+disparadorUpdate(employee: Employee){
+    this.empleadoComponente.onUpdateEmloyee(employee);
+}
+mostrar(){
+    if(this.mostrarFiltro) {
+        this.mostrarFiltro = false;
+    }else{
+        this.mostrarFiltro=true;
+    }
+}
+
+AplicarFiltro(){
+   const results: Employee[] = [];
+
+   for (const employee of this.empleadoComponente.employees) {
+    if (employee.id == this.valorId || 
+        employee.email.indexOf(this.valorEmail)!==-1  ||
+        employee.jobTitle.indexOf(this.valorJob)!==-1  ||
+        employee.name.indexOf(this.valorName)!==-1 ||
+        employee.phone.indexOf(this.valorPhone)!==-1 
+   ) {
+      results.push(employee);
+    }
+  }
+  this.empleadoComponente.employees = results;
+  if (results.length === 0 ) {
+    this.empleadoComponente.getEmployees();
+  }
+   
 }
 
 }
-
